@@ -44,7 +44,6 @@ const numberCards = (event) => {
 
 
     if(element.tagName === "INPUT"){
-        console.log("buenasss")
         if(element.value === "10"){
             hijo.classList.add("seleccionado"); 
         }else if(element.value === "12"){
@@ -85,3 +84,29 @@ const loadImg = (event) =>{
 }
 
 document.addEventListener("DOMContentLoaded", loadImg);
+
+//evento para esciger la imagen de la carta
+let imagenSeleccionada = null; // Variable de la imagen seleccionada 
+
+const selectImg = (event) => {
+    let element = event.target;
+
+    if (element.tagName === "IMG") {
+        if (imagenSeleccionada) {
+            // Si hay una imagen seleccionada previamente, elimina su borde
+            imagenSeleccionada.style.border = "none";
+        }
+
+        let hermanomenor = element.previousElementSibling;
+        let hermanomayor = element.nextElementSibling;
+
+        // Agrega un borde rojo solo a la imagen actual
+        element.style.border = "2px solid red";
+        // Actualiza la imagen seleccionada
+        imagenSeleccionada = element;
+    }
+}
+
+config_card_body.addEventListener("click", selectImg);
+
+
