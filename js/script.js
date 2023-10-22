@@ -27,3 +27,61 @@ let btn_nueva_partida = document.getElementById("btn_nueva_partida");
 
 
 let imagenes = document.getElementsByTagName("img");
+let visor_tama = document.getElementById("visor_tama");
+
+juego.style.display = "none";
+finjuego.style.display = "none"
+btn_comprobar.style.display = "none";
+btn_nueva_partida.style.display = "none";
+
+//Evento elegir el número de cartas.
+const numberCards = (event) => {
+
+    let element = event.target;
+    let cartas;
+    let hijo = element.nextElementSibling;
+    let padre = element.previousElementSibling;
+
+
+    if(element.tagName === "INPUT"){
+        console.log("buenasss")
+        if(element.value === "10"){
+            hijo.classList.add("seleccionado"); 
+        }else if(element.value === "12"){
+            padre.classList.remove("seleccionado");
+            hijo.classList.add("seleccionado");
+        }else if(element.value === "14"){
+            padre.classList.remove("seleccionado");
+            hijo.classList.add("seleccionado");
+        }else if(element.value === "16"){
+            padre.classList.remove("seleccionado");
+            hijo.classList.add("seleccionado");
+        }else if(element.value === "18"){
+            padre.classList.remove("seleccionado");
+            hijo.classList.add("seleccionado");
+        }else if(element.value === "20"){
+            padre.classList.remove("seleccionado");
+            hijo.classList.add("seleccionado");
+        }
+    }
+
+
+}
+
+visor_tama.addEventListener("click", numberCards);
+
+//Evento donde se cargan las imagenes
+const loadImg = (event) =>{
+
+    for(let i = 0; i < imagenes_cartas.length; i++){
+        let img = document.createElement("IMG");
+        img.src = "./assets/images/cartas/"+imagenes_cartas[i];
+        img.style.width = "100px";
+        img.style.height = "120px";
+        img.style.padding = "5px";
+        config_card_body.appendChild(img);
+    }
+
+}
+
+document.addEventListener("DOMContentLoaded", loadImg);
