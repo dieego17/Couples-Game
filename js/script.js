@@ -71,21 +71,22 @@ visor_tama.addEventListener("click", numberCards);
 
 //Evento donde se cargan las imagenes
 const loadImg = (event) =>{
-
+    
     for(let i = 0; i < imagenes_cartas.length; i++){
+        let div = document.createElement("DIV");
+        div.className = "config-card__card";
+        config_card_body.appendChild(div);
         let img = document.createElement("IMG");
         img.src = "./assets/images/cartas/"+imagenes_cartas[i];
-        img.style.width = "100px";
-        img.style.height = "120px";
-        img.style.padding = "5px";
-        config_card_body.appendChild(img);
+        img.className = "config-card__img";
+        div.appendChild(img);
     }
 
 }
 
 document.addEventListener("DOMContentLoaded", loadImg);
 
-//evento para esciger la imagen de la carta
+//evento para escoger la imagen de la carta
 let imagenSeleccionada = null; // Variable de la imagen seleccionada 
 
 const selectImg = (event) => {
@@ -94,14 +95,14 @@ const selectImg = (event) => {
     if (element.tagName === "IMG") {
         if (imagenSeleccionada) {
             // Si hay una imagen seleccionada previamente, elimina su borde
-            imagenSeleccionada.style.border = "none";
+            imagenSeleccionada.classList.remove("carta-seleccionada");
         }
 
         let hermanomenor = element.previousElementSibling;
         let hermanomayor = element.nextElementSibling;
 
         // Agrega un borde rojo solo a la imagen actual
-        element.style.border = "2px solid red";
+        element.classList.add("carta-seleccionada");
         // Actualiza la imagen seleccionada
         imagenSeleccionada = element;
     }
@@ -110,3 +111,54 @@ const selectImg = (event) => {
 config_card_body.addEventListener("click", selectImg);
 
 
+
+//Evento elegir el tiempo.
+const selectTime = (event) => {
+
+    let element = event.target;
+    let hijo = element.nextElementSibling;
+    let padre = element.previousElementSibling;
+
+
+    if(element.tagName === "INPUT"){
+        if(element.value === "10"){
+            hijo.classList.add("seleccionado"); 
+        }else if(element.value === "20"){
+            padre.classList.remove("seleccionado");
+            hijo.classList.add("seleccionado");
+        }else if(element.value === "30"){
+            padre.classList.remove("seleccionado");
+            hijo.classList.add("seleccionado");
+        }else if(element.value === "40"){
+            padre.classList.remove("seleccionado");
+            hijo.classList.add("seleccionado");
+        }
+    }
+
+}
+
+visor_tiempo.addEventListener("click", selectTime);
+
+//Evento elegir el nivel de ayuda.
+const selectHelp = (event) => {
+
+    let element = event.target;
+    let hijo = element.nextElementSibling;
+    let padre = element.previousElementSibling;
+
+
+    if(element.tagName === "INPUT"){
+        if(element.value === "alto"){
+            hijo.classList.add("seleccionado"); 
+        }else if(element.value === "medio"){
+            padre.classList.remove("seleccionado");
+            hijo.classList.add("seleccionado");
+        }else if(element.value === "sin"){
+            padre.classList.remove("seleccionado");
+            hijo.classList.add("seleccionado");
+        }
+    }
+
+}
+
+visor_ayuda.addEventListener("click", selectHelp);
