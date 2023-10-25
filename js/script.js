@@ -29,41 +29,31 @@ let btn_nueva_partida = document.getElementById("btn_nueva_partida");
 let imagenes = document.getElementsByTagName("img");
 let visor_tama = document.getElementById("visor_tama");
 
-juego.style.display = "none";
-finjuego.style.display = "none"
-btn_comprobar.style.display = "none";
-btn_nueva_partida.style.display = "none";
+document.addEventListener("DOMContentLoaded", ()=>{
 
+    juego.classList.add("ocultar");
+    finjuego.classList.add("ocultar");
+    btn_comprobar.classList.add("ocultar");
+    btn_nueva_partida.classList.add("ocultar");
+
+})
+
+let numeroimagenesseleccionado = null;
+let numimagenes
 //Evento elegir el número de cartas.
 const numberCards = (event) => {
 
     let element = event.target;
-    let cartas;
-    let hijo = element.nextElementSibling;
-    let padre = element.previousElementSibling;
 
-
-    if(element.tagName === "INPUT"){
-        if(element.value === "10"){
-            hijo.classList.add("seleccionado"); 
-        }else if(element.value === "12"){
-            padre.classList.remove("seleccionado");
-            hijo.classList.add("seleccionado");
-        }else if(element.value === "14"){
-            padre.classList.remove("seleccionado");
-            hijo.classList.add("seleccionado");
-        }else if(element.value === "16"){
-            padre.classList.remove("seleccionado");
-            hijo.classList.add("seleccionado");
-        }else if(element.value === "18"){
-            padre.classList.remove("seleccionado");
-            hijo.classList.add("seleccionado");
-        }else if(element.value === "20"){
-            padre.classList.remove("seleccionado");
-            hijo.classList.add("seleccionado");
+    if(element.nodeName === "INPUT"){
+        numimagenes = event.target.value;
+        if(numeroimagenesseleccionado){
+            numeroimagenesseleccionado.classList.remove("seleccionado");
         }
+        event.target.nextElementSibling.classList.add("seleccionado");
+        numeroimagenesseleccionado = event.target.nextElementSibling;
+        configuracion_tama.classList.remove("error");
     }
-
 
 }
 
@@ -88,23 +78,22 @@ document.addEventListener("DOMContentLoaded", loadImg);
 
 //evento para escoger la imagen de la carta
 let imagenSeleccionada = null; // Variable de la imagen seleccionada 
-
+let imagenselec;
 const selectImg = (event) => {
     let element = event.target;
 
     if (element.tagName === "IMG") {
         if (imagenSeleccionada) {
+            imagenselec = event.target
             // Si hay una imagen seleccionada previamente, elimina su borde
             imagenSeleccionada.classList.remove("carta-seleccionada");
         }
-
-        let hermanomenor = element.previousElementSibling;
-        let hermanomayor = element.nextElementSibling;
 
         // Agrega un borde rojo solo a la imagen actual
         element.classList.add("carta-seleccionada");
         // Actualiza la imagen seleccionada
         imagenSeleccionada = element;
+        configuracion_cartas.classList.remove("error");
     }
 }
 
@@ -113,26 +102,21 @@ config_card_body.addEventListener("click", selectImg);
 
 
 //Evento elegir el tiempo.
+let tiemposeleccionado = null;
+let numecartas
 const selectTime = (event) => {
 
     let element = event.target;
-    let hijo = element.nextElementSibling;
-    let padre = element.previousElementSibling;
 
 
-    if(element.tagName === "INPUT"){
-        if(element.value === "10"){
-            hijo.classList.add("seleccionado"); 
-        }else if(element.value === "20"){
-            padre.classList.remove("seleccionado");
-            hijo.classList.add("seleccionado");
-        }else if(element.value === "30"){
-            padre.classList.remove("seleccionado");
-            hijo.classList.add("seleccionado");
-        }else if(element.value === "40"){
-            padre.classList.remove("seleccionado");
-            hijo.classList.add("seleccionado");
+    if(element.nodeName === "INPUT"){
+        numecartas = event.target.value;
+        if(tiemposeleccionado){
+            tiemposeleccionado.classList.remove("seleccionado");
         }
+        event.target.nextElementSibling.classList.add("seleccionado");
+        tiemposeleccionado = event.target.nextElementSibling;
+        tiempo.classList.remove("error");
     }
 
 }
@@ -140,25 +124,40 @@ const selectTime = (event) => {
 visor_tiempo.addEventListener("click", selectTime);
 
 //Evento elegir el nivel de ayuda.
+let ayudaseleccionada = null;
+let numayuda
 const selectHelp = (event) => {
 
     let element = event.target;
-    let hijo = element.nextElementSibling;
-    let padre = element.previousElementSibling;
-
-
-    if(element.tagName === "INPUT"){
-        if(element.value === "alto"){
-            hijo.classList.add("seleccionado"); 
-        }else if(element.value === "medio"){
-            padre.classList.remove("seleccionado");
-            hijo.classList.add("seleccionado");
-        }else if(element.value === "sin"){
-            padre.classList.remove("seleccionado");
-            hijo.classList.add("seleccionado");
+    if(element.nodeName === "INPUT"){
+        numayuda = event.target.value;
+        if(ayudaseleccionada){
+            ayudaseleccionada.classList.remove("seleccionado");
         }
+        event.target.nextElementSibling.classList.add("seleccionado");
+        ayudaseleccionada = event.target.nextElementSibling;
+        ayuda.classList.remove("error");
     }
 
 }
 
 visor_ayuda.addEventListener("click", selectHelp);
+
+//evento para validar el juego
+const validateGame = (event) =>{
+
+    if(!numimagenes){
+        configuracion_tama.classList.add("error")
+    }
+    if(!imagenselec){
+        configuracion_cartas.classList.add("error")
+    }
+    if(!numecartas){
+        tiempo.classList.add("error")
+    }
+    if(!numayuda){
+        ayuda.classList.add("error")
+    }
+}
+
+btn_validar.addEventListener("click", validateGame)
