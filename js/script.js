@@ -10,7 +10,9 @@ let ayuda = document.getElementById("ayuda");
 let botones = document.getElementById("botones");
 let finjuego = document.getElementById("finjuego");
 
-let configuracion_tama = document.getElementById("configuracion_tama");
+let configuracion_tama = document.getElementById("configuracion_tama");  
+let visor_tama = document.getElementById("visor_tama"); 
+
 let configuracion_cartas = document.getElementById("configuracion_cartas");
 let configuracion_juego = document.getElementById("configuracion_juego");
 let configuracion_ayuda = document.getElementById("configuracion_ayuda");
@@ -27,17 +29,18 @@ let btn_nueva_partida = document.getElementById("btn_nueva_partida");
 
 
 let imagenes = document.getElementsByTagName("img");
-let visor_tama = document.getElementById("visor_tama");
 
-document.addEventListener("DOMContentLoaded", ()=>{
 
-    juego.classList.add("ocultar");
-    finjuego.classList.add("ocultar");
-    btn_comprobar.classList.add("ocultar");
-    btn_nueva_partida.classList.add("ocultar");
+//OCULTAR CAPAS Y CARGAR IMÁGENES
+document.addEventListener("DOMContentLoaded", () =>{
+    juego.classList.add("displaynone")
+    finjuego.classList.add("displaynone")
+    btn_comprobar.classList.add("displaynone")
+    btn_nueva_partida.classList.add("displaynone")
 
 })
 
+//SELECCIONA NUM CARTAS
 let numeroimagenesseleccionado = null;
 let numimagenes
 //Evento elegir el número de cartas.
@@ -50,14 +53,15 @@ const numberCards = (event) => {
         if(numeroimagenesseleccionado){
             numeroimagenesseleccionado.classList.remove("seleccionado");
         }
-        event.target.nextElementSibling.classList.add("seleccionado");
-        numeroimagenesseleccionado = event.target.nextElementSibling;
+        element.nextElementSibling.classList.add("seleccionado");
+        numeroimagenesseleccionado = element.nextElementSibling;
         configuracion_tama.classList.remove("error");
     }
 
 }
 
 visor_tama.addEventListener("click", numberCards);
+
 
 //Evento donde se cargan las imagenes
 const loadImg = (event) =>{
@@ -76,72 +80,78 @@ const loadImg = (event) =>{
 
 document.addEventListener("DOMContentLoaded", loadImg);
 
-//evento para escoger la imagen de la carta
-let imagenSeleccionada = null; // Variable de la imagen seleccionada 
-let imagenselec;
-const selectImg = (event) => {
+//SELECCIONA IMAGEN CARTAS
+let imagenesseleccionado = null;
+let typeImage
+//Evento elegir el número de cartas.
+const imageCartas = (event) => {
+
     let element = event.target;
 
-    if (element.tagName === "IMG") {
-        if (imagenSeleccionada) {
-            imagenselec = event.target
-            // Si hay una imagen seleccionada previamente, elimina su borde
-            imagenSeleccionada.classList.remove("carta-seleccionada");
+    if(element.nodeName === "IMG"){
+        typeImage = event.target.src;
+        if(imagenesseleccionado){
+            imagenesseleccionado.classList.remove("carta-seleccionada");
         }
-
-        // Agrega un borde rojo solo a la imagen actual
         element.classList.add("carta-seleccionada");
-        // Actualiza la imagen seleccionada
-        imagenSeleccionada = element;
+        imagenesseleccionado = element;
         configuracion_cartas.classList.remove("error");
     }
+
 }
 
-config_card_body.addEventListener("click", selectImg);
+config_card_body.addEventListener("click", imageCartas);
 
 
 
-//Evento elegir el tiempo.
-let tiemposeleccionado = null;
-let numecartas
-const selectTime = (event) => {
+//SELECCIONA TIEMPO DE JUEGO
+let numerotimeseleccionado = null;
+let numtime
+//Evento elegir el número de cartas.
+const numberTime = (event) => {
 
     let element = event.target;
 
-
     if(element.nodeName === "INPUT"){
-        numecartas = event.target.value;
-        if(tiemposeleccionado){
-            tiemposeleccionado.classList.remove("seleccionado");
+        numtime = event.target.value;
+        if(numerotimeseleccionado){
+            numerotimeseleccionado.classList.remove("seleccionado");
         }
-        event.target.nextElementSibling.classList.add("seleccionado");
-        tiemposeleccionado = event.target.nextElementSibling;
+        element.nextElementSibling.classList.add("seleccionado");
+        numerotimeseleccionado = element.nextElementSibling;
         tiempo.classList.remove("error");
     }
 
 }
 
-visor_tiempo.addEventListener("click", selectTime);
 
-//Evento elegir el nivel de ayuda.
-let ayudaseleccionada = null;
-let numayuda
-const selectHelp = (event) => {
+visor_tiempo.addEventListener("click", numberTime);
+
+
+//SELECCIONA NIVEL AYUDA
+let numerohelpeleccionado = null;
+let numhelp
+//Evento elegir el número de cartas.
+const numberHelp = (event) => {
 
     let element = event.target;
+
     if(element.nodeName === "INPUT"){
-        numayuda = event.target.value;
-        if(ayudaseleccionada){
-            ayudaseleccionada.classList.remove("seleccionado");
+        numhelp = event.target.value;
+        if(numerohelpeleccionado){
+            numerohelpeleccionado.classList.remove("seleccionado");
         }
-        event.target.nextElementSibling.classList.add("seleccionado");
-        ayudaseleccionada = event.target.nextElementSibling;
+        element.nextElementSibling.classList.add("seleccionado");
+        numerohelpeleccionado = element.nextElementSibling;
         ayuda.classList.remove("error");
     }
 
 }
 
-visor_ayuda.addEventListener("click", selectHelp);
+visor_ayuda.addEventListener("click", numberHelp);
+
+let imagenUsada = []
+let imgRep = false;
 
 //evento para validar el juego
 const validateGame = (event) =>{
@@ -149,15 +159,105 @@ const validateGame = (event) =>{
     if(!numimagenes){
         configuracion_tama.classList.add("error")
     }
-    if(!imagenselec){
+    if(!typeImage){
         configuracion_cartas.classList.add("error")
     }
-    if(!numecartas){
+    if(!numtime){
         tiempo.classList.add("error")
     }
-    if(!numayuda){
+    if(!numhelp){
         ayuda.classList.add("error")
+    }
+    if(numimagenes && typeImage && numtime && numhelp){
+        configurador.classList.add("displaynone")
+        juego.classList.remove("displaynone")
+        btn_validar.classList.add("displaynone")
+        btn_comprobar.classList.remove("displaynone")
+        generarJuego()
+
     }
 }
 
 btn_validar.addEventListener("click", validateGame)
+
+//GENERAR JUEGO
+function generarJuego(){
+    for(let i = 0; i < numimagenes; i++){
+        const img = document.createElement("IMG");
+        img.className = "visor_imagenes_juego"
+        img.src = typeImage;
+        img.className = "config-card__card"
+        img.classList.add("carta_elegida")
+        visor_imagenes_juego.appendChild(img);
+        //PULSAR IMAGENES PARA SACAR ANIMALES
+        const clickCartas = () =>{
+
+            let imgAle = Math.floor(Math.random()*imagenes_animales.length);
+            let animalesImg = imagenes_animales[imgAle]
+            img.src = "./assets/images/animales/"+animalesImg
+
+        }
+        img.addEventListener("click", clickCartas)
+
+    }
+        
+} 
+
+
+//COMPROBAR REPETIDAS
+function repetidas(event) {
+    const imagenes = document.querySelectorAll('.carta_elegida');
+    const srcArray = [];
+
+    let hayrepetidas = false;
+
+    imagenes.forEach(imagen => {
+        const src = imagen.src;
+
+        if (srcArray.includes(src)) {
+            hayrepetidas = true;
+        } else {
+            srcArray.push(src);
+
+        }
+    });
+
+    if (hayrepetidas) {
+        const nivelsin = visor_ayuda.querySelector('input[type="radio"][value="sin"]')
+        const nivelmedio = visor_ayuda.querySelector('input[type="radio"][value="medio"]')
+        const nivelalto = visor_ayuda.querySelector('input[type="radio"][value="alto"]')
+        if (nivelmedio.checked) {
+            btn_comprobar.style.backgroundColor = "red"
+
+            setInterval(function () {
+                btn_comprobar.style.backgroundColor = "transparent"
+            }, 2000)
+        }
+
+        else if (nivelsin.checked) {
+            btn_comprobar.style.backgroundColor = "transparent"
+        }
+
+        else if (nivelalto.checked) {
+           
+        }
+
+
+
+    } else {
+        finjuego.style.display = "block";
+        juego.style.display = "none";
+        btn_comprobar.style.display = "none"
+        btn_nueva_partida.style.display = "block"
+    }
+}
+
+btn_comprobar.addEventListener("click", repetidas)
+
+//Recargar partida
+function recargar() {
+    location.reload()
+
+}
+
+btn_nueva_partida.addEventListener("click", recargar)
